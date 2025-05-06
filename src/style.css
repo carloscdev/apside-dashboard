@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #9B00FF;
+  --primary-light: #d493ff;
+  --primary-dark: #53008b;
+}
+
+@theme {
+  --color-primary: var(--primary);
+}
+
+input[type="date"],
+select {
+  @apply bg-white border border-gray-200 h-10 px-2 rounded;
+}
