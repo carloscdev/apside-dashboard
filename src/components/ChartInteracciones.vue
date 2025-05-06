@@ -3,36 +3,52 @@ import { ref, computed } from 'vue'
 import { DoughnutChart, PieChart, BarChart, LineChart } from 'vue-chart-3'
 import { Chart, registerables } from 'chart.js'
 import Card from './Card.vue'
+import type { InteraccionPorCanal, InteraccionPorTipo } from '../interfaces/dashboardInterface'
 
 Chart.register(...registerables)
 
-const chartType = ref<'doughnut' | 'pie' | 'bar' | 'line'>('doughnut')
-const dataView = ref<'canal' | 'interaccion'>('canal')
+const props = defineProps({
+  interaccionesPorCanal: {
+    type: Array as () => InteraccionPorCanal[],
+    required: true,
+  },
+  interaccionesPorTipo: {
+    type: Array as () => InteraccionPorTipo[],
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+    default: true,
+  },
+})
 
-const datasets = {
+const chartType = ref<'doughnut' | 'pie' | 'bar' | 'line'>('doughnut')
+const dataView = ref<'canal' | 'tipo'>('canal')
+
+const datasets = computed(() => ({
   canal: {
-    labels: ['Whatsapp', 'Teléfono', 'Mail'],
+    labels: props.interaccionesPorCanal.map((item) => item.canal),
     datasets: [
       {
         label: 'Canal',
-        data: [1050, 1400, 650],
+        data: props.interaccionesPorCanal.map((item) => item.cantidad),
         backgroundColor: ['#9B00FF', '#d493ff', '#53008b'],
       },
     ],
   },
-  interaccion: {
-    labels: ['Cobranzas', 'Notificaciones', 'Soporte'],
+  tipo: {
+    labels: props.interaccionesPorTipo.map((item) => item.tipo),
     datasets: [
       {
-        label: 'Interacción',
-        data: [900, 1100, 700],
+        label: 'Tipo',
+        data: props.interaccionesPorTipo.map((item) => item.cantidad),
         backgroundColor: ['#9B00FF', '#d493ff', '#53008b'],
       },
     ],
   },
-}
+}))
 
-const chartData = computed(() => datasets[dataView.value])
+const chartData = computed(() => datasets.value[dataView.value])
 
 const chartOptions = computed(() => ({
   plugins: {
@@ -62,7 +78,7 @@ const chartComponent = computed(() => {
         <span class="text-xs text-gray-400">Mostrar por:</span>
         <select v-model="dataView" id="type">
           <option value="canal">Canal</option>
-          <option value="interaccion">Interacción</option>
+          <option value="tipo">Tipo</option>
         </select>
       </label>
       <label for="type" class="grid">
@@ -75,7 +91,7 @@ const chartComponent = computed(() => {
         </select>
       </label>
     </div>
-
-    <component :is="chartComponent" :chart-data="chartData" :options="chartOptions" style="height: 300px" />
+    <div v-if="loading" class="animate-pulse aspect-square w-full bg-gray-200 rounded"></div>
+    <component v-else :is="chartComponent" :chart-data="chartData" :options="chartOptions" style="height: 300px" />
   </Card>
 </template>

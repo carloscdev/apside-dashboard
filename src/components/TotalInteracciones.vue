@@ -15,7 +15,7 @@ defineProps({
 
 <template>
   <Card title="Total Interacciones" icon="bi-clipboard-check">
-    <div v-if="loading" class="animate-pulse h-[48px] w-56 bg-gray-200 rounded">
+    <div v-if="loading" class="animate-pulse h-[53px] w-56 bg-gray-200 rounded">
     </div>
     <p v-else class="text-5xl font-bold text-gray-800">
       {{ total }}

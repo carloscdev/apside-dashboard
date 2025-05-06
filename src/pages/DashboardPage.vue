@@ -56,7 +56,12 @@ getInteracciones()
       </div>
       <div class="grid md:grid-cols-3 gap-4">
         <TableList :interacciones="interaccionesData" :loading="isLoadingInteracciones" class="md:col-start-1 md:col-span-2" />
-        <ChartInteracciones class="md:col-start-3 md:col-span-1" />
+        <ChartInteracciones
+          :interaccionesPorCanal="dashboardData?.interaccionesPorCanal || []"
+          :interaccionesPorTipo="dashboardData?.interaccionesPorTipo || []"
+          :loading="isLoadingDashboard"
+          class="md:col-start-3 md:col-span-1"
+        />
       </div>
     </main>
   </div>

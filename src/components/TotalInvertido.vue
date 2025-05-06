@@ -15,7 +15,7 @@ defineProps({
 
 <template>
   <Card title="Total Invertido (USD)" icon="bi-cash-coin">
-    <div v-if="loading" class="animate-pulse h-[48px] w-56 bg-gray-200 rounded"></div>
+    <div v-if="loading" class="animate-pulse h-[53px] w-56 bg-gray-200 rounded"></div>
     <p v-else class="text-5xl font-bold text-gray-800">
       $ {{ total }}
     </p>
